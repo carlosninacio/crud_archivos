@@ -1,4 +1,4 @@
-package entidad;
+package maquina_snacks_archivo.dominio;
 
 import java.io.Serializable;
 import java.util.Objects;

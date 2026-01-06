@@ -1,4 +1,8 @@
-import entidad.Snack;
+package maquina_snacks_archivo.presentacion;
+
+import maquina_snacks_archivo.dominio.Snack;
+import maquina_snacks_archivo.servicio.IServicioSnacks;
+import maquina_snacks_archivo.servicio.ServicioSnacksLista;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,14 +16,16 @@ public class MaquinaSnacks {
     public static void maquinaSnacks() {
         var salir = false;
         var consola = new Scanner(System.in);
+        // Crear objeto para obtener el servicio de Snacks
+        IServicioSnacks servicioSnacks = new ServicioSnacksLista();
         // Crear lista de productos de tipo Snack
         List<Snack> productos = new ArrayList<>();
-        System.out.println("*** Maquina de Snacks ***");
-        Snacks.mostrarSnacks(); // Mostrar inventario de snacks disponibles
+        System.out.println("*** Maquina de maquina_snacks_archivo.servicio.Snacks ***");
+        servicioSnacks.mostrarSnacks(); // Mostrar inventario de snacks disponibles
         while(!salir) {
             try {
                 var opcion = mostrarMenu(consola);
-                salir = ejecutarOpciones(opcion, consola, productos);
+                salir = ejecutarOpciones(opcion, consola, productos, servicioSnacks);
             } catch (Exception e) {
                 System.out.println("Ocurrió un error: " + e.getMessage());
             } finally {
@@ -41,12 +47,12 @@ public class MaquinaSnacks {
         return Integer.parseInt(consola.nextLine());
     }
 
-    private static boolean ejecutarOpciones(int opcion, Scanner consola, List<Snack> productos) {
+    private static boolean ejecutarOpciones(int opcion, Scanner consola, List<Snack> productos, IServicioSnacks servicioSnacks) {
         var salir = false;
         switch (opcion) {
-            case 1 -> comprarSnack(consola, productos);
+            case 1 -> comprarSnack(consola, productos, servicioSnacks);
             case 2 -> mostrarTicket(productos);
-            case 3 -> agregarSnack(consola);
+            case 3 -> agregarSnack(consola, servicioSnacks);
             case 4 -> {
                 System.out.println("Regresa pronto!");
                 salir = true;
@@ -56,12 +62,12 @@ public class MaquinaSnacks {
         return salir;
     }
 
-    private static void comprarSnack (Scanner consola, List<Snack> productos) {
+    private static void comprarSnack (Scanner consola, List<Snack> productos, IServicioSnacks servicioSnacks) {
         System.out.print("Qué snack quieres comprar (id)?: ");
         var idSnack = Integer.parseInt(consola.nextLine());
         // Validación
         var snackEncontrado = false;
-        for(var snack: Snacks.getSnacks()) {
+        for(var snack: servicioSnacks.getSnacks()) {
             if (idSnack == snack.getIdSnack()) {
                 // Agregar snack porque se encontró
                 productos.add(snack);
@@ -86,14 +92,14 @@ public class MaquinaSnacks {
         System.out.println(ticket);
     }
 
-    private static void agregarSnack(Scanner consola) {
+    private static void agregarSnack(Scanner consola, IServicioSnacks servicioSnacks) {
         System.out.print("Nombre del snack: ");
         var nombre = consola.nextLine();
         System.out.print("Precio del snack: ");
         var precio = Double.parseDouble(consola.nextLine());
-        Snacks.agregarSnack(new Snack(nombre,precio));
+        servicioSnacks.agregarSnack(new Snack(nombre,precio));
         System.out.println("Snack creado correctamente");
-        Snacks.mostrarSnacks();
+        servicioSnacks.mostrarSnacks();
     }
 
 }
