@@ -22,7 +22,8 @@ public class LeerArchivo {
             // Cerrar archivo
             entrada.close();
         } catch (Exception e) {
-            System.out.println("Error al leer archivo: " );
+            System.out.println("Error al leer archivo: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
