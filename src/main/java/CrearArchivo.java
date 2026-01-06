@@ -13,7 +13,7 @@ public class CrearArchivo {
             } else {
                 // Crear el archivo
                 var salida = new PrintWriter(new FileWriter(archivo));
-                salida.close();
+                salida.close(); // Se guarda archivo a disco duro
                 System.out.println("Se ha creado el archivo");
             }
         } catch (IOException e) {

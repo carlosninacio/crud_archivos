@@ -1,0 +1,4 @@
+primeras
+lineas
+del
+archivo
